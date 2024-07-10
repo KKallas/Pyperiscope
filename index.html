@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Python Screenshot</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.34.2/ace.js"></script>
+
+    <style type="text/css" media="screen">
+        #aceEditor {
+            width: 1280px; /* same width as the image */
+            height: 360px;
+            padding: 0px;
+        }
+        
+        .table-cell {
+            vertical-align: top;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <table cellpadding="5" cellspacing="0">
+            <tr>
+                <td><img src="/screenshot" alt="Screenshot" class="img- fluid" style="width: 1280px;"></td>
+            </tr>
+            <tr>
+                <td class="table-cell"><div id="aceEditor"></div></td>
+            </tr>
+            <tr>
+                <td class="table-cell"><button id="js-button" class="btn btn-primary" style="width: 1280px;">Execute</button></td>
+            </tr>
+        </table>
+
+        <script>
+            // Update image
+            // Get the image element
+            var img = document.querySelector('img');
+
+            // Set the interval to reload the image every 5 seconds
+            setInterval(function() {
+                fetch('/screenshot', { cache: 'no-cache' }) // Load the new image URL
+                .then(response => response.blob()) // Get the blob representation of the image
+                .then(blob => img.src = URL.createObjectURL(blob)); // Update the src attribute with the loaded image
+
+            }, 5000);
+
+            // ACE
+            // Initialize the Ace Editor
+            var aceEditor = ace.edit("aceEditor");
+            aceEditor.setTheme("ace/theme/monokai");
+            aceEditor.session.setMode("ace/mode/python");
+
+            aceEditor.setValue('my test');
+
+            // Add an event listener to the button
+            document.getElementById('js-button').addEventListener('click', function() {
+                // Get the entered Python code
+                var pythonCode = aceEditor.getValue();
+
+                // Send the Python code to the server as a JSON payload
+                fetch('/python', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({text: pythonCode}),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Display the response from the server as a paragraph of text
+                    var answer = document.getElementById('answer');
+                    answer.innerHTML = data.answer;
+                })
+                .catch(error => console.error(error));
+            });
+        </script>
+    </div>
+</body>
+</html>
