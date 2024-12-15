@@ -1,0 +1,52 @@
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pyperiscope"
+version = "0.1.0"
+description = "Copy Python objects as portable code snippets between Jupyter notebooks"
+readme = "README.md"
+requires-python = ">=3.7"
+license = {text = "BSD-3-Clause"}
+authors = [
+    {name = "Kaspar Kallas", email = "kaspar.kana.kallas@gmail.com"}
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "Framework :: IPython",
+    "Framework :: Jupyter",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: BSD License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+keywords = ["repl", "template", "development", "jupyter", "base64", "screenshot", "puautogui"]
+
+[project.optional-dependencies]
+test = ["pytest>=6.0"]
+jupyter = ["ipython"]
+
+dependencies = [
+    "pyautogui>=0.9.53",
+    "pillow>=9.0.0",
+    "numpy>=1.21.0",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/KKallas/DataBoomer"
+"Bug Tracker" = "https://github.com/KKallas/DataBoomer/issues"
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+python_files = ["test_*.py"]  # Changed from test_*.py to tests_*.py
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "-v -s"
