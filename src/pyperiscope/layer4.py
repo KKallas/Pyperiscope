@@ -1,3 +1,4 @@
+import pyautogui
 from .layer3 import Scope
 
 class Scope(Scope):
