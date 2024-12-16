@@ -1,5 +1,8 @@
 **Pypersicope**
 ================
+![image](https://github.com/user-attachments/assets/227ad299-eeef-4063-bcbb-c0e0d5be3cb7)
+
+
 
 A Lightweight Web-Based Automation Tool
 -----------------------------------------
