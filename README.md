@@ -4,21 +4,19 @@
 
 
 
-A Lightweight Web-Based Automation Tool
+A Lightweight Visual Automation System
 -----------------------------------------
 
 ### Overview
 
-Pypersicope is an open-source, web-based automation tool that enables users to create and run complex software automation workflows using simple, human-readable instructions. The tool utilizes Python, pyautogui, and a custom-designed web interface to provide an intuitive and powerful automation platform.
+This Visual Automation System, a digital doppelgänger of human action, operates within the confines of Jupyter Lab. It creates and executes automated workflows based on the recognition of screen elements, much like an artificial eye scanning a landscape.
 
 ### Features
 
-* Lightweight web server with a single, human-readable page for creating and running automation workflows
-* Full-resolution screenshot display and text box (for Python code) for easy step-by-step instructions
-* Stack of steps on the left side allows for easy navigation and modification of the workflow
+* Grab a portion of the screen like a snip tool
+* Store the snips with logic in each automation workbook as base64 string
+* Run workflow by running the workbook
 * Supports point-and-click, wait-for-image, time-based, or event-based automation steps
-* All interaction occurs through GET and POST endpoints, making it easily integrable with Large Language Models (LLMs) like LLaMA 3
-* Ability to save and load workflows as zipped folders containing a single Python file and images
 
 ### Design Philosophy
 
@@ -26,15 +24,7 @@ Pypersicope is designed to be an ultra-simple automation interface that can be u
 
 ### Target Audience
 
-* Developers and designers who need to automate complex software workflows
-* Students and researchers who require a simple, easy-to-use automation platform for educational or research purposes
-* Professionals who need to streamline repetitive tasks and improve productivity
-
-### Technical Requirements
-
-* Python 3.x (recommended)
-* pyautogui library
-* Docker (optional) with OpenWebGUI (for running the tool on Unreal 5 Editor project)
+The Scope class is designed for capturing and processing screenshots using Python's pyautogui and image manipulation libraries. It allows users to capture a portion of their screen, define specific areas of interest, and save or load these areas as base64-encoded images. Below is an overview of how to use the class.
 
 ### LLaMA Integration
 
@@ -45,8 +35,7 @@ Pypersicope is designed to work seamlessly with LLaMA 3 and other LLMs. Users ca
 * 1st release
 * Image detection
 * Ollama integeration for text descriptions
-* YOLO for abstract detection
-* Object movement and out view presistance
+* Launch control and error handeling
 
 ### Contributing
 
