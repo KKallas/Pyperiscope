@@ -10,6 +10,7 @@ A Lightweight Visual Automation System
 ### Overview
 
 This Visual Automation System, a digital doppelgänger of human action, operates within the confines of Jupyter Lab. It creates and executes automated workflows based on the recognition of screen elements, much like an artificial eye scanning a landscape.
+Smaple workflow automation built with PyPeriscope, run a calculator and add 5 and 11 [sample workflow](https://github.com/KKallas/Pyperiscope/blob/main/tests/test%20-%20calc%20win.ipynb)
 
 ### Features
 
@@ -21,6 +22,7 @@ This Visual Automation System, a digital doppelgänger of human action, operates
 ### Design Philosophy
 
 Pypersicope is designed to be an ultra-simple automation interface that can be used by humans from cell phones or other devices. The tool aims to provide a reliable and fault-tolerant workflow recording mechanism, allowing users to pick up where they left off in case of any errors or interruptions.
+The library is developed for [**Simple Software Dogmas**](https://github.com/KKallas/SimpleSoftwareDogmas)
 
 ### Target Audience
 
