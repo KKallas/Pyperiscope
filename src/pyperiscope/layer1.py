@@ -10,18 +10,25 @@ import base64
 from io import BytesIO
 
 class Scope:
-    def __init__(self, saved_dict=None, mouse_offset=(0, 0), area_offset=(0,0),
+    def __init__(self, saved_dict=None, saved_image=None, mouse_offset=(0, 0), area_offset=(0,0),
                  crop_size=(640, 640), area_size=(64, 64), cursor_size=32):
         self.crop_size = tuple(max(size, 640) for size in crop_size)
         self.area_size = tuple(max(size, 32) for size in area_size)
         self.area_offset = area_offset
         self.mouse_offset = tuple(max(offset, 0) for offset in mouse_offset)
         self.cursor_size = cursor_size
+        self.found_locations = []
         
         if saved_dict:
             self.load_from_dict(saved_dict)
-        else:
-            self.initial_capture()
+            return
+        if saved_image:
+            self.full_image = saved_image
+            self.full_size = saved_image.size
+            self.update_crop_and_area()
+            return
+            
+        self.initial_capture()
 
     def initial_capture(self):
         self.full_image = pyautogui.screenshot()
@@ -71,9 +78,11 @@ class Scope:
         return output_dict
 
     def load_from_dict(self, saved_dict):
-        self.area_image = np.array(Image.open(BytesIO(base64.b64decode(saved_dict['area']))))
-        self.cropped_image = np.array(Image.open(BytesIO(base64.b64decode(saved_dict['clean_preview']))))
+        self.area_image = Image.fromarray(np.array(Image.open(BytesIO(base64.b64decode(saved_dict['area'])))), mode="RGB")
+        self.cropped_image = Image.fromarray(np.array(Image.open(BytesIO(base64.b64decode(saved_dict['clean_preview'])))), mode="RGB")
         metadata = saved_dict['image_metadata']
+        #for attr in ['area_box', 'area_offset', 'area_size', 'crop_box', 'crop_size', 'cursor_size', 'image_size', 'mouse_offset']:
+        #    setattr(self, attr, tuple(metadata[attr]))
         self.area_box = metadata['area_box']
         self.area_offset = metadata['area_offset']
         self.area_size = metadata['area_size']
@@ -85,5 +94,5 @@ class Scope:
         # Generate black image in the original desktop size and add only the caprured preview in the right location
         self.full_size = tuple(metadata['image_size'])
         full_image = Image.new('RGB', self.full_size, color='black')
-        full_image.paste(Image.fromarray(self.cropped_image), self.crop_box[:2])
+        full_image.paste(self.cropped_image, self.crop_box[:2])
         self.full_image = full_image
