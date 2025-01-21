@@ -1,2 +1,4 @@
-__version__ = "0.3.0"
-from .layer6 import Scope
+from .scope import Scope
+from .scraper import Scraper
+
+__all__ = ['Scope', 'Scraper']
