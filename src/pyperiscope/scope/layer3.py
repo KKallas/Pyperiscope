@@ -9,5 +9,4 @@ class Scope(Scope):
         db = DataBoomer(self.save_dict(), obj_name = "step", template = new_template)
         return (db.payload)
     def save_string(self):
-        e = elvis()
-        e.leave(self.get_string())
+        e = elvis("{s}", s=self.get_string())
