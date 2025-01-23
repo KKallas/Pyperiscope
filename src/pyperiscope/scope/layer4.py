@@ -1,28 +1,38 @@
 import pyautogui
+import time
 from .layer3 import Scope
 
 class Scope(Scope):
-    def find(self):
+    def find(self, tries=1, timeout=1, confidence=0.9):
         count = 1
         self.found_locations = []
         self.found_image = pyautogui.screenshot()
-        found_patterns = pyautogui.locateAllOnScreen(self.area_image, confidence=0.9)
 
-        for loc in found_patterns:
-            new_loc = {'area':(loc.left, loc.top, loc.left + self.area_size[0], loc.top + self.area_size[1]),
-                                         'mouse_offset':(loc.left - self.area_offset[0], loc.top - self.area_offset[1]), 
-                                         'label':"[0] STEP", 
-                                         'area_offset':self.area_offset}
-
-            if self.found_locations == []: 
-                self.found_locations.append(new_loc)
-                continue
-
-            if not(self.overlap(self.found_locations[-1], new_loc)):
-                new_loc['label'] = "["+str(count)+"] STEP"
-                self.found_locations.append(new_loc)
-                count = count + 1
-                continue
+        for i in range(tries):
+            try:
+                found_patterns = pyautogui.locateAllOnScreen(self.area_image, confidence=confidence)
+                for loc in found_patterns:
+                    new_loc = {'area':(loc.left, loc.top, loc.left + self.area_size[0], loc.top + self.area_size[1]),
+                                                 'mouse_offset':(loc.left - self.area_offset[0], loc.top - self.area_offset[1]), 
+                                                 'label':"[0] STEP", 
+                                                 'area_offset':self.area_offset}
+        
+                    if self.found_locations == []: 
+                        self.found_locations.append(new_loc)
+                        continue
+        
+                    if not(self.overlap(self.found_locations[-1], new_loc)):
+                        new_loc['label'] = "["+str(count)+"] STEP"
+                        self.found_locations.append(new_loc)
+                        count = count + 1
+                        continue
+                break
+            except Exception as e:
+                if i==(tries-1):
+                    raise e
+                else:
+                    time.sleep(timeout)
+                print("try: "str(i)+"/"+str(tries))
 
         print("found: " + str(count))
 
