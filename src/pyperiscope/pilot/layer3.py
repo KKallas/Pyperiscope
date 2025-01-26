@@ -1,4 +1,5 @@
 from .layer2 import Pilot
+import pyautogui
 
 class Pilot(Pilot):
     # run the steps in global namespace so it would work like running the worksheet on the worksheet

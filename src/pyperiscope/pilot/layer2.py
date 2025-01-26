@@ -1,4 +1,6 @@
 from .layer1 import Pilot
+from PIL.PngImagePlugin import PngInfo
+import pickle
 
 class Pilot(Pilot):
     # save screenshot with step and data
