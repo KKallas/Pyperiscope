@@ -32,7 +32,7 @@ class Scope(Scope):
                     raise e
                 else:
                     time.sleep(timeout)
-                print("try: "str(i)+"/"+str(tries))
+                print("try: " + str(i) + "/" + str(tries))
 
         print("found: " + str(count))
 
