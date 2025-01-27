@@ -11,7 +11,7 @@ class FileWatcher:
     def __init__(self, binoculars, base_path):
         self.binoculars = binoculars
         self.base_path = base_path
-        self.current_index = self._find_lowest_index()
+        self.current_index = 0
         self.running = False
         self.thread = None
         self.lock = threading.Lock()
@@ -31,28 +31,40 @@ class FileWatcher:
             self.thread.join()
 
     def monitor_sequence(self):
+        self.current_index = self._find_lowest_index()
+        last_processed_path = None  # Track last processed file
+        
         while self.running:
             current_path = self.get_current_path()
-            if self._wait_for_file(current_path):
-                try:
-                    with self.lock:
-                        self.binoculars._update_from_screenshot(current_path)
-                        self.current_index += 1
-                        print(f"Waiting for {self.get_current_path()}")
-                except Exception as e:
-                    print(f"Error processing {current_path}: {str(e)}")
-                    self.current_index += 1  # Prevent blocking
+            
+            # Skip if we've already processed this file
+            if current_path == last_processed_path:
+                self.current_index += 1
+                continue
+                
+            if os.path.exists(current_path):
+                if self._wait_for_file(current_path):
+                    try:
+                        with self.lock:
+                            self.binoculars._update_from_screenshot(current_path)
+                            last_processed_path = current_path
+                            self.current_index += 1
+                            print(f"Processed {current_path}, waiting for {self.get_current_path()}")
+                    except Exception as e:
+                        print(f"Error processing {current_path}: {str(e)}")
+                        self.current_index += 1  # Prevent blocking
             else:
                 time.sleep(0.1)
 
     def _find_lowest_index(self):
-        """Find the lowest available index starting from 0."""
+        """Find the lowest index that needs processing."""
         index = 0
         while True:
             current_path = f"{self.base_path}-{index}.png"
             if not os.path.exists(current_path):
-                return index
-            index += 1    
+                return max(0, index - 1)  # Return previous index if files exist
+            index += 1
+        return 0
     
     def _wait_for_file(self, path, timeout=5):
         """Wait for file to stabilize and become readable"""

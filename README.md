@@ -1,46 +1,100 @@
-**Pypersicope**
-================
+# PyPeriscope
 ![image](https://github.com/user-attachments/assets/227ad299-eeef-4063-bcbb-c0e0d5be3cb7)
 
+A visual automation framework for Jupyter Lab designed for secure, air-gapped environments. PyPeriscope enables creation, execution, and debugging of GUI automation workflows through visual pattern matching, with local LLM support for intelligent decision making.
 
+## Design Philosophy
+PyPeriscope is built for air-gapped automation servers while maintaining accessibility from any device - from cell phones to desktop computers. The tool provides reliable, fault-tolerant workflow recording with built-in state management and error recovery.
 
-A Lightweight Visual Automation System
------------------------------------------
+Built following [**Simple Software Dogmas**](https://github.com/KKallas/SimpleSoftwareDogmas), PyPeriscope emphasizes simplicity, reliability, and secure automation development.
 
-### Overview
+## Core Components
 
-This Visual Automation System, a digital doppelgänger of human action, operates within the confines of Jupyter Lab. It creates and executes automated workflows based on the recognition of screen elements, much like an artificial eye scanning a landscape.
-Smaple workflow automation built with PyPeriscope, run a calculator and add 5 and 11 [sample workflow](https://github.com/KKallas/Pyperiscope/blob/main/tests/test%20-%20calc%20win.ipynb)
+### Scraper: Visual Element Selection
+Define automation targets on the automation server:
+```python
+from pyperiscope import Scraper
+scraper = Scraper(pyautogui.screenshot())
+step = scraper.get_scope()  # Interactive selection creates automation step
+```
 
-### Features
+### Scope: Pattern Detection Engine
+Handle screen interactions on the automation server:
+```python
+# Find and interact with screen elements
+step.find(confidence=0.9)
+if step.found_locations:
+    pyautogui.click(step.get_locations()[0])
+```
 
-* Grab a portion of the screen like a snip tool
-* Store the snips with logic in each automation workbook as base64 string
-* Run workflow by running the workbook
-* Supports point-and-click, wait-for-image, time-based, or event-based automation steps
+### Pilot: Automation Runner
+Execute and manage workflows:
+```python
+pilot = Pilot("automation.ipynb")
+pilot.run_workbook()  # Full workflow
+pilot.run_workbook(firstStep=3)  # Resume from step 3
+```
 
-### Design Philosophy
+### Binoculars: Visual Debugger
+Monitor and troubleshoot automations remotely:
+```python
+viewer = Binoculars()
+viewer.start_monitoring("_automation")  # Live monitoring
+viewer.debug_screenshot("failed_step.png")  # Debug mode
+```
 
-Pypersicope is designed to be an ultra-simple automation interface that can be used by humans from cell phones or other devices. The tool aims to provide a reliable and fault-tolerant workflow recording mechanism, allowing users to pick up where they left off in case of any errors or interruptions.
-The library is developed for [**Simple Software Dogmas**](https://github.com/KKallas/SimpleSoftwareDogmas)
+### AL: Air-Gapped AI Assistant
+Integrate local LLM-based decision making:
+```python
+from pyperiscope import AL
+ai = AL(interface="ollama", model="llama3")  # Runs on automation server
+selections = ["fruit", "vegetables", "python script"]
+response = ai.ask(f"Please select from options: {selections}\nContext: {inputtext}")
+```
 
-### Target Audience
+## Workflow Development
 
-The Scope class is designed for capturing and processing screenshots using Python's pyautogui and image manipulation libraries. It allows users to capture a portion of their screen, define specific areas of interest, and save or load these areas as base64-encoded images. Below is an overview of how to use the class.
+1. **Setup**
+   - Connect to automation server's Jupyter Lab
+   - Create new automation notebook
+   - Document workflow requirements in markdown
 
-### LLaMA Integration
+2. **Development**
+   - Use Scraper on automation server to capture elements
+   - Create step definitions in notebook cells
+   - Test elements with running the cells in any order necessary
+   - Implement error handling and recovery logic
 
-Pypersicope is designed to work seamlessly with LLaMA 3 and other LLMs. Users can choose their preferred LLM and integrate it with Pypersicope to create a powerful automation workflow.
+3. **Testing**
+   - Run complete workflow with Pilot
+   - Monitor execution with Binoculars
+   - Debug and adjust confidence levels as needed
+   - Save working configurations
 
-### Roadmap
+## Best Practices
 
-* 1st release
-* Image detection
-* Ollama integeration for text descriptions
-* Launch control and error handeling
+1. **Environment Setup**
+   - Ensure automation server has required screen access
+   - Configure Jupyter Lab for remote access
+   - Set up local LLM if using AI assistance
+   - Verify all dependencies on automation server
 
-### Contributing
+2. **Development**
+   - Document each step thoroughly in markdown
+   - Use Binoculars for real-time visual feedback
+   - Implement appropriate error handling
+   - Test AI decisions with sample scenarios
 
-We welcome contributions, suggestions, and ideas from the community! If you'd like to contribute to Pypersicope, please feel free to reach out or open an issue on GitHub.
+3. **Maintenance**
+   - Monitor execution with Binoculars
+   - Maintain backup of working configurations
+   - Update element selections when UI changes
+   - Document known failure scenarios and solutions
 
-Thank you for considering Pypersicope! We hope this tool will help simplify your automation workflow and improve productivity.
+## Architecture Benefits
+
+1. **Air-Gapped Ready**: Fully functional in secure environments
+2. **Remote-First**: Designed for remote development and monitoring
+3. **State Management**: Built-in error recovery and state tracking
+4. **Modular Design**: Components work together seamlessly
+5. **Local AI**: No external API dependencies for decision making

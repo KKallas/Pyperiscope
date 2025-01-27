@@ -22,12 +22,12 @@ class Binoculars(Binoculars):
         """Update description text with markdown formatting"""
         # Convert markdown to HTML
         if not text == None:
-            md = markdown.Markdown()
+            md = markdown.Markdown(extensions=['tables', 'fenced_code', 'nl2br'])
             self.description.value = md.convert(text)
     
     def set_error(self, text):
         """Update error text with markdown formatting"""
         # Convert markdown to HTML with red color for errors
         if not text == None:
-            md = markdown.Markdown()
+            md = markdown.Markdown(extensions=['tables', 'fenced_code', 'nl2br'])
             self.error_text.value = md.convert(text)
