@@ -1,8 +1,3 @@
-"""
-Base functionality
-The `Scope` class is designed for capturing and processing screenshots using Python's `pyautogui` and image manipulation libraries. It allows users to capture a portion of their screen, define specific areas of interest, and save or load these areas as base64-encoded images. Below is an overview of how to use the class.
-docs/layer1.md
-"""
 import pyautogui
 import numpy as np
 from PIL import Image, ImageDraw, ImageFont
@@ -11,12 +6,13 @@ from io import BytesIO
 
 class Scope:
     def __init__(self, saved_dict=None, saved_image=None, mouse_offset=(0, 0), area_offset=(0,0),
-                 crop_size=(640, 640), area_size=(64, 64), cursor_size=32):
+                 crop_size=(640, 640), area_size=(64, 64), cursor_size=32, crop_offset=(0,0)):
         self.crop_size = tuple(max(size, 640) for size in crop_size)
         self.area_size = tuple(max(size, 32) for size in area_size)
         self.area_offset = area_offset
         self.mouse_offset = tuple(max(offset, 0) for offset in mouse_offset)
         self.cursor_size = cursor_size
+        self.crop_offset = crop_offset
         self.found_locations = []
         
         if saved_dict:
@@ -37,8 +33,8 @@ class Scope:
 
     def update_crop_and_area(self, full_image = None):
         full_screen_image = full_image or self.full_image.copy()
-        crop_x = min(max(self.mouse_offset[0] - self.crop_size[0] // 2, 0), self.full_size[0] - self.crop_size[0])
-        crop_y = min(max(self.mouse_offset[1] - self.crop_size[1] // 2, 0), self.full_size[1] - self.crop_size[1])
+        crop_x = min(max((self.mouse_offset[0] + self.crop_offset[0]) - self.crop_size[0] // 2, 0), self.full_size[0] - self.crop_size[0])
+        crop_y = min(max((self.mouse_offset[1] + self.crop_offset[1]) - self.crop_size[1] // 2, 0), self.full_size[1] - self.crop_size[1])
         self.crop_box = (crop_x, crop_y, crop_x + self.crop_size[0], crop_y + self.crop_size[1])
 
         area_x = self.mouse_offset[0] + self.area_offset[0]

@@ -1,6 +1,18 @@
 from .layer1 import Scraper
 
 class Scraper(Scraper):
+    def clear_all(self):
+        self.point = None
+        self.box = None
+        self.dot.set_data([], [])
+        if self.box_rect:
+            self.box_rect.set_width(0)
+            self.box_rect.set_height(0)
+        for marker in self.corner_markers:
+            marker.remove()
+        self.corner_markers.clear()
+        self.fig.canvas.draw_idle()
+        
     def get_click(self):
         return tuple(int(n) for n in self.point) if self.point else None
     

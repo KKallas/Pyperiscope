@@ -5,7 +5,7 @@ import os
 
 class Pilot(Pilot):
     # save screenshot with step and data
-    def save_screenshot_with_data(self, screenshot, step, step_no):
+    def save_screenshot_with_data(self, screenshot, step, step_no, payload={}):
         data_dict = {}
         # save the step dict
         data_dict['step'] = step.save_dict()
@@ -18,6 +18,8 @@ class Pilot(Pilot):
         data_dict['scope_cell_id'] = self.scope_cell_id
         # docstring into saved png
         data_dict['current_doc'] = self.current_doc
+        # data aquired during the automation that will be used for answer generation
+        data_dict['payload'] = payload
         
         metadata = PngInfo()
         # Convert dict to bytes using pickle

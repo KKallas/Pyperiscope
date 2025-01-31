@@ -32,7 +32,7 @@ class Pilot(Pilot):
         try:
             self.run_code(code)
         except Exception as e:
-            self.last_error = e
+            self.last_error = str(e)
         # stop if there was an error
         if self.last_error:
             return
@@ -48,7 +48,14 @@ class Pilot(Pilot):
             if self.last_error:
                 print(self.last_error)
                 break
-        self.save_screenshot_with_data(current_screenshot, step, step_no)
+        try:
+            if type(automation_payload) == dict:
+                self.payload_out = automation_payload
+            else:
+                self.payload_out = {}
+        except:
+            self.payload_out = {}
+        self.save_screenshot_with_data(current_screenshot, step, step_no, self.payload_out)
 
     # select and run a workbook
     def run_workbook(self, firstStep = -1):

@@ -5,9 +5,9 @@ import pickle
 
 class Binoculars(Binoculars):
     def debug_screenshot(self, filepath):
-        global step
         image = Image.open(filepath)
-        
+        step = None
+        automation_payload = None
         try:
             # Extract serialized data from metadata
             serialized_data = bytes.fromhex(image.info.get("custom_data", ""))
@@ -20,6 +20,7 @@ class Binoculars(Binoculars):
             self.current_step = data_dict['current_step']
             self.last_error = data_dict['last_error']
             self.current_doc = data_dict['current_doc']
+            automation_payload = data_dict['payload']
             # update UI
             try:
                 step.found_locations = data_dict['last_found']
@@ -31,3 +32,5 @@ class Binoculars(Binoculars):
                 self.update_both(step.render_preview(), self.error_image)
                 self.set_description(self.current_doc)
                 self.set_error(self.last_error)
+
+        return step, automation_payload
