@@ -40,11 +40,11 @@ class Scope(Scope):
         x1, y1, x2, y2 = area1['area']
         x3, y3, x4, y4 = area2['area']
         
-        if x3 < x2: # check X overlap
-            return True
-        if y3 < y2: # check Y overlap
-            return True
-        return False
+        # For rectangles to overlap, they must overlap on BOTH x AND y axes
+        x_overlap = x1 < x4 and x3 < x2
+        y_overlap = y1 < y4 and y3 < y2
+        
+        return x_overlap and y_overlap
         
     def draw_found(self, found_id=0):
         base_image = self.found_image.copy()
