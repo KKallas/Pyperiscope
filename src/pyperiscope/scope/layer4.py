@@ -3,14 +3,17 @@ import time
 from .layer3 import Scope
 
 class Scope(Scope):
-    def find(self, tries=1, timeout=1, confidence=0.9):
+    def find(self, tries=1, timeout=1, confidence=0.9, input_image=None):
         count = 1
         self.found_locations = []
-        self.found_image = pyautogui.screenshot()
+        if input_image==None:
+            self.found_image = pyautogui.screenshot()
+        else:
+            self.found_image = input_image
 
         for i in range(tries):
             try:
-                found_patterns = pyautogui.locateAllOnScreen(self.area_image, confidence=confidence)
+                found_patterns = pyautogui.locateAll(self.area_image, self.found_image, confidence=confidence)
                 for loc in found_patterns:
                     new_loc = {'area':(loc.left, loc.top, loc.left + self.area_size[0], loc.top + self.area_size[1]),
                                                  'mouse_offset':(loc.left - self.area_offset[0], loc.top - self.area_offset[1]), 
