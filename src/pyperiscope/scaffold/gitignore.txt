@@ -1,0 +1,4 @@
+runs/
+screens/
+__pycache__/
+.DS_Store

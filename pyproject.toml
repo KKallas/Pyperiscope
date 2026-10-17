@@ -4,55 +4,50 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pyperiscope"
-version = "0.4.0"
-description = "Copy Python objects as portable code snippets between Jupyter notebooks"
+version = "2.0.0.dev0"
+description = "Visual GUI automation for legacy software, written and repaired by coding agents (Claude Code, Codex)"
 readme = "README.md"
-requires-python = ">=3.7"
+requires-python = ">=3.10"
 license = {text = "BSD-3-Clause"}
 authors = [
     {name = "Kaspar Kallas", email = "kaspar.kana.kallas@gmail.com"}
 ]
 dependencies = [
-    "pyautogui>=0.9.53",
-    "pillow>=9.0.0",
-    "numpy>=1.21.0",
-    "opencv-python",
-    "Nbformat",
+    "numpy>=1.24",
+    "opencv-python-headless>=4.8",
+    "mss>=10.0",
+    "pyobjc-framework-Quartz>=10; sys_platform == 'darwin'",
+    "pyobjc-framework-Cocoa>=10; sys_platform == 'darwin'",
+    "pyobjc-framework-ApplicationServices>=10; sys_platform == 'darwin'",
 ]
 classifiers = [
-    "Development Status :: 4 - Beta",
+    "Development Status :: 3 - Alpha",
     "Environment :: Console",
-    "Framework :: IPython",
-    "Framework :: Jupyter",
     "Intended Audience :: Developers",
     "License :: OSI Approved :: BSD License",
-    "Operating System :: OS Independent",
+    "Operating System :: MacOS",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.7",
-    "Programming Language :: Python :: 3.8",
-    "Programming Language :: Python :: 3.9",
-    "Programming Language :: Python :: 3.10",
-    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Software Development :: Testing",
+    "Topic :: Desktop Environment",
 ]
-keywords = ["repl", "template", "development", "jupyter", "base64", "screenshot", "puautogui"]
+keywords = ["gui automation", "rpa", "template matching", "agents", "claude code", "codex"]
 
 [project.optional-dependencies]
-test = [
-    "pytest>=6.0",
-    "nbformat",
-    "nbconvert",
-    "ipykernel"
-]
-jupyter = ["ipython"]
+test = ["pytest>=7"]
+
+[project.scripts]
+pyperiscope = "pyperiscope.cli:main"
 
 [project.urls]
-"Homepage" = "https://github.com/KKallas/DataBoomer"
-"Bug Tracker" = "https://github.com/KKallas/DataBoomer/issues"
+"Homepage" = "https://github.com/KKallas/Pyperiscope"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+pyperiscope = ["scaffold/*", "scaffold/workflows/*", "server/static/*", "manual/*"]
 
 [tool.pytest.ini_options]
 pythonpath = ["src"]
 testpaths = ["tests"]
-python_files = ["test_*.py"]
-python_classes = ["Test*"]
-python_functions = ["test_*"]
-addopts = "-v -s"
+addopts = "-q"

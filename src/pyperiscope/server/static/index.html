@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pyperiscope</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <header class="top">
+    <div class="brand">Pyperiscope <span class="ver">v2</span></div>
+    <div id="root-path" class="muted small"></div>
+    <div id="human-alert" hidden></div>
+  </header>
+  <div class="layout">
+    <aside class="side">
+      <section><h2>Workflows</h2><ul id="workflows" class="list"></ul></section>
+      <section><h2>Runs</h2><ul id="runs" class="list"></ul></section>
+      <section><h2>Targets <button id="new-target" class="small">+ New</button></h2><ul id="targets" class="list"></ul></section>
+    </aside>
+    <main id="view"></main>
+  </div>
+  <div id="toast" hidden></div>
+  <script src="/static/editor.js"></script>
+  <script src="/static/app.js"></script>
+  <script src="/static/runs.js"></script>
+</body>
+</html>
